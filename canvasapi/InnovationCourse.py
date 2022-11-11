@@ -1,3 +1,6 @@
+import operator
+from functools import reduce
+
 from .Project import *
 
 
@@ -12,6 +15,10 @@ class InnovationCourse:
             if p.id == project_id:
                 return p
         return None
+
+    @property
+    def students(self):
+        return reduce(lambda curr, p: curr + p.students, self.projects, [])
 
     def find_student(self, student_id):
         for p in self.projects:

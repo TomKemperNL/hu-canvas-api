@@ -24,10 +24,8 @@ holistiq = HolisticAPI(api, this_year, "SD")
 holistiq.init(project_ids)  # TODO: uitzoeken hoe dit netter kan, zo'n magische method call is niks natuurlijk
 
 all_todos = []
-for project in holistiq.projects:
+for project in this_year.projects:
     (grades_per_student, todos) = holistiq.get_grades_in_project(project, [
-        'Kennis toepassen op HBO-i niveau 2',
-        'Nieuwe competenties op HBO-i niveau 3',
         'Gedreven ontwerpen',
         'Gedistribueerde systemen'
     ])
@@ -53,6 +51,13 @@ for project in holistiq.projects:
         print(f'\t\tAantal opleveringen: {total_submissions}')
         last_formatted = "-" if last_submission is None else last_submission.strftime("%d %b")
         print(f'\t\tLaatste opleveringen: {last_formatted}')
+
+opdrachten = [
+    'Tennis Data case (SQL)'
+]
+
+(grades_per_student, todos) = holistiq.get_inno_grades(opdrachten)
+
 
 for todo in all_todos:
     print(todo)

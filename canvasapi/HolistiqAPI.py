@@ -12,8 +12,6 @@ class HolisticAPI:
         self.canvas_api = canvas_api
         self.innovation_course = inno_course
         self.programme = programme
-        self.projects = []
-        self.students = []
 
     def init(self, project_ids):
         def get_students_from_course(inno_course, target_section):
@@ -47,14 +45,17 @@ class HolisticAPI:
 
         get_inno_projects_cached = cache_list("./cache/all_projects.json", Project, get_inno_projects)
 
-        self.students = get_students_cached(self.innovation_course, 'SD')
-        self.projects = get_inno_projects_cached(project_ids, self.students)
+        students = get_students_cached(self.innovation_course, 'SD')
+        self.innovation_course.projects = get_inno_projects_cached(project_ids, students)
 
     def get_project(self, name):
-        for p in self.projects:
+        for p in self.innovation_course.projects:
             if str(name) in p.name:
                 return p
         return None
+
+    def get_inno_grades(self, assignment_names):
+        return self.get_grades_in_project(self.innovation_course, assignment_names)
 
     def get_grades_in_project(self, project, assignment_names):
 
