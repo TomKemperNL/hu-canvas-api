@@ -99,10 +99,14 @@ class HolisticAPI:
             for name in assignment_names:
                 submissions = {}
                 result[student.name][name] = submissions
+                canvas_names = [name]
                 for nr in range(1, 10):
                     assignment_name = f'{name} | Oplevering {nr} — Docent'
+                    canvas_names.append(assignment_name)
+
+                for canvas_name in canvas_names:
                     assignment_ids = get_assignment_ids_by_name(project,
-                                                                assignment_name)
+                                                                canvas_name)
                     for aid in assignment_ids:
                         if aid is not None:
                             sub = get_submission_student(project, student, aid)
@@ -111,7 +115,7 @@ class HolisticAPI:
                                     todos.append({
                                         'project': project.name,
                                         'student': student.name,
-                                        'assignment': assignment_name,
+                                        'assignment': canvas_name,
                                         'link': self.canvas_api.create_client_url(
                                             f'courses/{project.id}/gradebook/speed_grader?assignment_id={aid}&student_id={student.id}')
                                     })
